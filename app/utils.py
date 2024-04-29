@@ -18,6 +18,21 @@ class EmailData:
 
 
 def render_email_template(*, template_name: str, context: dict[str, Any]) -> str:
+    """
+    takes a template name and context dictionary as inputs and renders an HTML
+    content using a template engine, returning the generated content as a string.
+
+    Args:
+        template_name (str): name of the email template to be rendered.
+        context (dict[str, Any]): data to be inserted into the email template,
+            allowing the `render` method of the `Template` class to replace
+            placeholders with the actual content.
+
+    Returns:
+        str: an HTML content generated from a pre-defined email template based on
+        the provided context.
+
+    """
     template_str = (
         Path(__file__).parent / "email-templates" / "build" / template_name
     ).read_text()
@@ -31,6 +46,18 @@ def send_email(
     subject: str = "",
     html_content: str = "",
 ) -> None:
+    """
+    sends an email to a specified recipient using the provided subject and HTML
+    content, utilizing the configured email settings from the application's
+    configuration file.
+
+    Args:
+        email_to (str): recipient's email address to which the email message will
+            be sent.
+        subject (""): subject line of the email that will be sent.
+        html_content (""): HTML content of the email that will be sent.
+
+    """
     assert settings.emails_enabled, "no provided configuration for email variables"
     message = emails.Message(
         subject=subject,
@@ -51,6 +78,19 @@ def send_email(
 
 
 def generate_test_email(email_to: str) -> EmailData:
+    """
+    creates an email message with a customized template and sends it to a provided
+    email address.
+
+    Args:
+        email_to (str): recipient's email address for which the test email is to
+            be generated.
+
+    Returns:
+        EmailData: an `EmailData` object containing the HTML content and subject
+        line of a test email.
+
+    """
     project_name = settings.PROJECT_NAME
     subject = f"{project_name} - Test email"
     html_content = render_email_template(
@@ -61,6 +101,23 @@ def generate_test_email(email_to: str) -> EmailData:
 
 
 def generate_reset_password_email(email_to: str, email: str, token: str) -> EmailData:
+    """
+    generates an email with a password recovery link for a user, using a templated
+    email template and customizable context variables.
+
+    Args:
+        email_to (str): email address of the user to whom the password reset link
+            will be sent.
+        email (str): email address of the user to whom the password reset link
+            will be sent.
+        token (str): password reset token that is sent to the user's email address
+            for password recovery.
+
+    Returns:
+        EmailData: an email data object containing the HTML content and subject
+        of a password recovery email.
+
+    """
     project_name = settings.PROJECT_NAME
     subject = f"{project_name} - Password recovery for user {email}"
     link = f"{settings.server_host}/reset-password?token={token}"
@@ -80,6 +137,21 @@ def generate_reset_password_email(email_to: str, email: str, token: str) -> Emai
 def generate_new_account_email(
     email_to: str, username: str, password: str
 ) -> EmailData:
+    """
+    generates a new email for a user with their username, password, and an optional
+    email address.
+
+    Args:
+        email_to (str): email address of the recipient to whom the new account
+            details will be sent.
+        username (str): username for the new account being generated.
+        password (str): password for the new account to be generated.
+
+    Returns:
+        EmailData: an email data object containing the HTML content and subject
+        line for a new account email.
+
+    """
     project_name = settings.PROJECT_NAME
     subject = f"{project_name} - New account for user {username}"
     html_content = render_email_template(
@@ -96,6 +168,19 @@ def generate_new_account_email(
 
 
 def generate_password_reset_token(email: str) -> str:
+    """
+    generates a password reset token using a secret key and the current timestamp,
+    expiration time, and the email address of the user.
+
+    Args:
+        email (str): email address of the user to whom the password reset token
+            is being generated for, and it is used as the sub claim in the JWT
+            token that is generated.
+
+    Returns:
+        str: a JSON Web Token (JWT) containing an expiration time and email address.
+
+    """
     delta = timedelta(hours=settings.EMAIL_RESET_TOKEN_EXPIRE_HOURS)
     now = datetime.utcnow()
     expires = now + delta
@@ -109,6 +194,18 @@ def generate_password_reset_token(email: str) -> str:
 
 
 def verify_password_reset_token(token: str) -> str | None:
+    """
+    decodes a password reset token using a secret key and algorithm, and returns
+    the sub claim of the decoded token if successful, or `None` otherwise.
+
+    Args:
+        token (str): password reset token to be verified.
+
+    Returns:
+        str | None: a string representing the subscriber ID of the user who reset
+        their password.
+
+    """
     try:
         decoded_token = jwt.decode(
             token, settings.SECRET_KEY, algorithms=["HS256"])
