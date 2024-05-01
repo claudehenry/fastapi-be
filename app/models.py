@@ -57,11 +57,9 @@ class UsersPublic(SQLModel):
     count: int
 
 
-# Shared properties
 class ItemBase(SQLModel):
     title: str
     description: str | None = None
-    """Item description."""
 
 
 # Properties to receive on item creation
