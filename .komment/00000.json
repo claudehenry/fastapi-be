@@ -1,0 +1,301 @@
+[
+  {
+    "name": "test_user.py",
+    "path": "app/tests/crud/test_user.py",
+    "content": {
+      "structured": {
+        "description": "",
+        "items": [
+          {
+            "id": "de5a1fa8-7e0c-4823-a399-eb76cceeb4b5",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_authenticate_user",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 20,
+              "insert": 21
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "email = random_email()\n    password = random_lower_string()\n    user_in = UserCreate(email=email, password=password)\n    user = crud.create_user(session=db, user_create=user_in)\n    authenticated_user = crud.authenticate(\n        session=db, email=email, password=password)\n    assert authenticated_user\n    assert user.email == authenticated_user.email",
+            "length": 9,
+            "comment": {
+              "description": "Authenticates a random user using a generated email and password, creates the user in the database, and asserts that the authenticated user is the same as the created user.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "database session, which is used to perform CRUD (Create, Read, Update, Delete) operations on the user data."
+                }
+              ],
+              "returns": null
+            }
+          },
+          {
+            "id": "e6312ea2-8c96-4774-80f8-fa25e75ecb88",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_not_authenticate_user",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 31,
+              "insert": 32
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "email = random_email()\n    password = random_lower_string()\n    user = crud.authenticate(session=db, email=email, password=password)\n    assert user is None",
+            "length": 5,
+            "comment": {
+              "description": "Attempts to authenticate a random email and password combination but fails due to the user not being authenticated, returning `None`.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "Session object that contains the database connection for the application."
+                }
+              ],
+              "returns": null
+            }
+          },
+          {
+            "id": "d809c689-5d5b-444d-8ca4-96b80e5e2b92",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_check_if_user_is_active",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 38,
+              "insert": 39
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "email = random_email()\n    password = random_lower_string()\n    user_in = UserCreate(email=email, password=password)\n    user = crud.create_user(session=db, user_create=user_in)\n    assert user.is_active is True",
+            "length": 6,
+            "comment": {
+              "description": "Verifies if a newly created user is active by checking their `is_active` attribute.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "session object that provides access to the database for performing CRUD operations, including creating a new user."
+                }
+              ],
+              "returns": null
+            }
+          },
+          {
+            "id": "1341521d-9a0c-4e6a-8534-a77196d68907",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_check_if_user_is_active_inactive",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 46,
+              "insert": 47
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "email = random_email()\n    password = random_lower_string()\n    user_in = UserCreate(email=email, password=password, disabled=True)\n    user = crud.create_user(session=db, user_create=user_in)\n    assert user.is_active",
+            "length": 6,
+            "comment": {
+              "description": "Verifies that a newly created user is marked as active in the database after creation.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "Session object that is used to interact with the database and retrieve data."
+                }
+              ],
+              "returns": null
+            }
+          },
+          {
+            "id": "096f6b3d-490f-470e-93b1-394f4c07fb13",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_check_if_user_is_superuser",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 54,
+              "insert": 55
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "email = random_email()\n    password = random_lower_string()\n    user_in = UserCreate(email=email, password=password, is_superuser=True)\n    user = crud.create_user(session=db, user_create=user_in)\n    assert user.is_superuser is True",
+            "length": 6,
+            "comment": {
+              "description": "Tests whether a newly created user is marked as a superuser by verifying the `is_superuser` attribute of the resulting user object.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "Python `Session` object that provides a connection to the database used for storing and retrieving data."
+                }
+              ],
+              "returns": null
+            }
+          },
+          {
+            "id": "12be5fde-4604-4caf-92bc-9995d597a178",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_check_if_user_is_superuser_normal_user",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 62,
+              "insert": 63
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "username = random_email()\n    password = random_lower_string()\n    user_in = UserCreate(email=username, password=password)\n    user = crud.create_user(session=db, user_create=user_in)\n    assert user.is_superuser is False",
+            "length": 6,
+            "comment": {
+              "description": "Tests whether a newly created user is a superuser or a normal user using the `is_superuser` attribute.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "Python `Session` object that provides a connection to the database, which is used to create and manipulate user objects within the function."
+                }
+              ],
+              "returns": null
+            }
+          },
+          {
+            "id": "2bbbab20-4961-480b-a81e-5237c7607ce6",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_get_user",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 70,
+              "insert": 71
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "password = random_lower_string()\n    username = random_email()\n    user_in = UserCreate(email=username, password=password, is_superuser=True)\n    user = crud.create_user(session=db, user_create=user_in)\n    user_2 = db.get(User, user.id)\n    assert user_2\n    assert user.email == user_2.email\n    assert jsonable_encoder(user) == jsonable_encoder(user_2)",
+            "length": 9,
+            "comment": {
+              "description": "Tests the `get()` method of a Session instance, retrieving a User object and verifying its properties match those of the original User create call.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "Session object, which is used to interact with the database and perform CRUD operations such as creating and retrieving users."
+                }
+              ],
+              "returns": null
+            }
+          },
+          {
+            "id": "67e5b3ef-8166-499c-9a9d-3686bde9d220",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_update_user",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 81,
+              "insert": 82
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "password = random_lower_string()\n    email = random_email()\n    user_in = UserCreate(email=email, password=password, is_superuser=True)\n    user = crud.create_user(session=db, user_create=user_in)\n    new_password = random_lower_string()\n    user_in_update = UserUpdate(password=new_password, is_superuser=True)\n    if user.id is not None:\n        crud.update_user(session=db, db_user=user, user_in=user_in_update)\n    user_2 = db.get(User, user.id)\n    assert user_2\n    assert user.email == user_2.email\n    assert verify_password(new_password, user_2.hashed_password)",
+            "length": 13,
+            "comment": {
+              "description": "Updates an existing user's password and checks the updated user's email, hashed password, and verifies the new password using `verify_password` function.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "session object of the database system used for creating and updating user objects."
+                }
+              ],
+              "returns": null
+            }
+          }
+        ]
+      }
+    }
+  }
+]
