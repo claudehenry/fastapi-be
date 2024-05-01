@@ -8,6 +8,7 @@ from app.tests.utils.utils import random_email, random_lower_string
 
 
 def test_create_user(db: Session) -> None:
+    """abc"""
     email = random_email()
     password = random_lower_string()
     user_in = UserCreate(email=email, password=password)
@@ -21,7 +22,8 @@ def test_authenticate_user(db: Session) -> None:
     password = random_lower_string()
     user_in = UserCreate(email=email, password=password)
     user = crud.create_user(session=db, user_create=user_in)
-    authenticated_user = crud.authenticate(session=db, email=email, password=password)
+    authenticated_user = crud.authenticate(
+        session=db, email=email, password=password)
     assert authenticated_user
     assert user.email == authenticated_user.email
 
