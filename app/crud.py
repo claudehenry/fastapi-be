@@ -8,7 +8,8 @@ from app.models import Item, ItemCreate, User, UserCreate, UserUpdate
 
 def create_user(*, session: Session, user_create: UserCreate) -> User:
     db_obj = User.model_validate(
-        user_create, update={"hashed_password": get_password_hash(user_create.password)}
+        user_create, update={
+            "hashed_password": get_password_hash(user_create.password)}
     )
     session.add(db_obj)
     session.commit()
@@ -37,6 +38,7 @@ def get_user_by_email(*, session: Session, email: str) -> User | None:
 
 
 def authenticate(*, session: Session, email: str, password: str) -> User | None:
+    """test"""
     db_user = get_user_by_email(session=session, email=email)
     if not db_user:
         return None
