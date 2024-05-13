@@ -735,5 +735,127 @@
         ]
       }
     }
+  },
+  {
+    "name": "users.py",
+    "path": "app/api/routes/users.py",
+    "content": {
+      "structured": {
+        "description": "",
+        "items": [
+          {
+            "id": "c804fbb0-0dc5-4cc6-85c2-d03490c637b8",
+            "ancestors": [],
+            "type": "function",
+            "name": "read_users",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 36,
+              "insert": 37
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "skip",
+                "value": "int",
+                "type": "0"
+              },
+              {
+                "name": "limit",
+                "value": "int",
+                "type": "100"
+              }
+            ],
+            "returns": "Any",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "count_statement = select(func.count()).select_from(User)\ncount = session.exec(count_statement).one()\nstatement = select(User).offset(skip).limit(limit)\nusers = session.exec(statement).all()\nreturn UsersPublic(data=users, count=count)",
+            "length": 12,
+            "comment": {
+              "description": "Retrieves a list of users from a database and returns them along with the total number of users in the database.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "Python `Session` object that provides the connection to the database for executing queries."
+                },
+                {
+                  "name": "skip",
+                  "type": "0",
+                  "value": "int",
+                  "description": "0-based offset from the beginning of the result set that the function will skip when retrieving users."
+                },
+                {
+                  "name": "limit",
+                  "type": "100",
+                  "value": "int",
+                  "description": "maximum number of users to be retrieved from the database by the function."
+                }
+              ],
+              "returns": {
+                "type": "Any",
+                "description": "a list of `User` objects and their corresponding count."
+              }
+            }
+          },
+          {
+            "id": "bdd4b6d8-ee51-4ff5-bed1-28371a24f708",
+            "ancestors": [],
+            "type": "function",
+            "name": "create_user",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 53,
+              "insert": 54
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "user_in",
+                "value": null,
+                "type": "UserCreate"
+              }
+            ],
+            "returns": "Any",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "user = crud.get_user_by_email(session=session, email=user_in.email)\nif user:\n        raise HTTPException(\n            status_code=400,\n            detail=\"The user with this email already exists in the system.\",\n        )\nuser = crud.create_user(session=session, user_create=user_in)\nif settings.emails_enabled and user_in.email:\n        email_data = generate_new_account_email(\n            email_to=user_in.email, username=user_in.email, password=user_in.password\n        )\n        send_email(\n            email_to=user_in.email,\n            subject=email_data.subject,\n            html_content=email_data.html_content,\n        )\nreturn user",
+            "length": 22,
+            "comment": {
+              "description": "Creates a new user in the system based on input provided in the `user_in` parameter. If an existing user with the same email exists, a 400 HTTP exception is raised. The function also sends an email to the newly created user's email address if emails are enabled and a password recovery link is included in the input.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "SessionDep object, which provides access to session data and methods for managing sessions in the application."
+                },
+                {
+                  "name": "user_in",
+                  "type": "UserCreate",
+                  "value": null,
+                  "description": "user to be created in the system."
+                }
+              ],
+              "returns": {
+                "type": "Any",
+                "description": "a newly created user object."
+              }
+            }
+          }
+        ]
+      }
+    }
   }
 ]

@@ -35,7 +35,20 @@ router = APIRouter()
 )
 def read_users(session: SessionDep, skip: int = 0, limit: int = 100) -> Any:
     """
-    Retrieve users.
+    Retrieves a list of users from a database and returns them along with the total
+    number of users in the database.
+
+    Args:
+        session (SessionDep): Python `Session` object that provides the connection
+            to the database for executing queries.
+        skip (0): 0-based offset from the beginning of the result set that the
+            function will skip when retrieving users.
+        limit (100): maximum number of users to be retrieved from the database by
+            the function.
+
+    Returns:
+        Any: a list of `User` objects and their corresponding count.
+
     """
 
     count_statement = select(func.count()).select_from(User)
@@ -52,7 +65,20 @@ def read_users(session: SessionDep, skip: int = 0, limit: int = 100) -> Any:
 )
 def create_user(*, session: SessionDep, user_in: UserCreate) -> Any:
     """
-    Create new user.
+    Creates a new user in the system based on input provided in the `user_in`
+    parameter. If an existing user with the same email exists, a 400 HTTP exception
+    is raised. The function also sends an email to the newly created user's email
+    address if emails are enabled and a password recovery link is included in the
+    input.
+
+    Args:
+        session (SessionDep): SessionDep object, which provides access to session
+            data and methods for managing sessions in the application.
+        user_in (UserCreate): user to be created in the system.
+
+    Returns:
+        Any: a newly created user object.
+
     """
     user = crud.get_user_by_email(session=session, email=user_in.email)
     if user:
