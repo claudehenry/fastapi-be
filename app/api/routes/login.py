@@ -26,15 +26,16 @@ def login_access_token(
     session: SessionDep, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ) -> Token:
     """
-    Authenticates a user using their email and password, then generates an access
-    token for future requests with an expiration time based on the application settings.
+    Authenticates a user using their email and password, generates an access token
+    for future requests with an expiration time based on system settings, and
+    returns the token.
 
     Args:
-        session (SessionDep): SessionDep object, which provides access to the
-            user's session data and is used to authenticate the user.
-        form_data (Annotated[OAuth2PasswordRequestForm, Depends()]):
-            OAuth2PasswordRequestForm object containing the username and password
-            of the user to be authenticated.
+        session (SessionDep): SessionDep instance that contains the session data
+            for the current request, which is used to authenticate the user and
+            obtain an access token.
+        form_data (Annotated[OAuth2PasswordRequestForm, Depends()]): OAuth2 password
+            request form containing the username and password of the user to be authenticated.
 
     Returns:
         Token: an access token for future requests.
@@ -58,15 +59,7 @@ def login_access_token(
 @router.post("/login/test-token", response_model=UserPublic)
 def test_token(current_user: CurrentUser) -> Any:
     """
-    Generates an access token for a given `CurrentUser`.
-
-    Args:
-        current_user (CurrentUser): current user for whom the access token is being
-            generated.
-
-    Returns:
-        Any: a `CurrentUser` object.
-
+    Test access token
     """
     return current_user
 

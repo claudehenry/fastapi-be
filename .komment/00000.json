@@ -644,7 +644,7 @@
         "description": "",
         "items": [
           {
-            "id": "9f179f34-2398-4051-9024-bda99a47660f",
+            "id": "a01f292a-ee54-4334-9fd3-9245126f56ab",
             "ancestors": [],
             "type": "function",
             "name": "login_access_token",
@@ -672,63 +672,24 @@
             "stripped": "user = crud.authenticate(\n        session=session, email=form_data.username, password=form_data.password\n    )\nif not user:\n        raise HTTPException(status_code=400, detail=\"Incorrect email or password\")\n    elif not user.is_active:\n        raise HTTPException(status_code=400, detail=\"Inactive user\")\naccess_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)\nreturn Token(\n        access_token=security.create_access_token(\n            user.id, expires_delta=access_token_expires\n        )\n    )",
             "length": 19,
             "comment": {
-              "description": "Authenticates a user using their email and password, then generates an access token for future requests with an expiration time based on the application settings.",
+              "description": "Authenticates a user using their email and password, generates an access token for future requests with an expiration time based on system settings, and returns the token.",
               "params": [
                 {
                   "name": "session",
                   "type": "SessionDep",
                   "value": null,
-                  "description": "SessionDep object, which provides access to the user's session data and is used to authenticate the user."
+                  "description": "SessionDep instance that contains the session data for the current request, which is used to authenticate the user and obtain an access token."
                 },
                 {
                   "name": "form_data",
                   "type": "Annotated[OAuth2PasswordRequestForm, Depends()]",
                   "value": null,
-                  "description": "OAuth2PasswordRequestForm object containing the username and password of the user to be authenticated."
+                  "description": "OAuth2 password request form containing the username and password of the user to be authenticated."
                 }
               ],
               "returns": {
                 "type": "Token",
                 "description": "an access token for future requests."
-              }
-            }
-          },
-          {
-            "id": "2bc4dbac-5ef0-45da-913a-b27a1471025f",
-            "ancestors": [],
-            "type": "function",
-            "name": "test_token",
-            "location": {
-              "offset": " ",
-              "indent": 4,
-              "start": 47,
-              "insert": 48
-            },
-            "params": [
-              {
-                "name": "current_user",
-                "value": null,
-                "type": "CurrentUser"
-              }
-            ],
-            "returns": "Any",
-            "skip": false,
-            "docLength": 3,
-            "stripped": "return current_user",
-            "length": 5,
-            "comment": {
-              "description": "Generates an access token for a given `CurrentUser`.",
-              "params": [
-                {
-                  "name": "current_user",
-                  "type": "CurrentUser",
-                  "value": null,
-                  "description": "current user for whom the access token is being generated."
-                }
-              ],
-              "returns": {
-                "type": "Any",
-                "description": "a `CurrentUser` object."
               }
             }
           }
