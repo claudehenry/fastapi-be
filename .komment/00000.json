@@ -857,5 +857,66 @@
         ]
       }
     }
+  },
+  {
+    "name": "security.py",
+    "path": "app/core/security.py",
+    "content": {
+      "structured": {
+        "description": "",
+        "items": [
+          {
+            "id": "369d124c-0564-43c5-a678-b7e5f0290fdb",
+            "ancestors": [],
+            "type": "function",
+            "name": "create_access_token",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 15,
+              "insert": 16
+            },
+            "params": [
+              {
+                "name": "subject",
+                "value": null,
+                "type": "str | Any"
+              },
+              {
+                "name": "expires_delta",
+                "value": null,
+                "type": "timedelta"
+              }
+            ],
+            "returns": "str",
+            "skip": false,
+            "docLength": null,
+            "stripped": "expire = datetime.utcnow() + expires_delta\n    to_encode = {\"exp\": expire, \"sub\": str(subject)}\n    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)\n    return encoded_jwt",
+            "length": 5,
+            "comment": {
+              "description": "Generates an access token using the given subject and expires delta time. It encodes the token using a secret key and a chosen algorithm, resulting in a secure and unique token.",
+              "params": [
+                {
+                  "name": "subject",
+                  "type": "str | Any",
+                  "value": null,
+                  "description": "identity of the user or application requesting an access token, which is included in the JWT as a claims object."
+                },
+                {
+                  "name": "expires_delta",
+                  "type": "timedelta",
+                  "value": null,
+                  "description": "duration of time that the access token will be valid, and is used to calculate the expiration timestamp for the JWT encoded in the function."
+                }
+              ],
+              "returns": {
+                "type": "str",
+                "description": "a JWT token containing an expiration date and subject ID."
+              }
+            }
+          }
+        ]
+      }
+    }
   }
 ]

@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1",
-    "updated_at": "2024-05-13T20:22:52.319Z",
+    "updated_at": "2024-05-13T20:27:49.232Z",
     "created_at": "2024-05-01T16:00:22.577Z",
     "pipelines": []
   },
@@ -10,7 +10,8 @@
       "app/tests/crud/test_user.py",
       "app/api/routes/items.py",
       "app/api/routes/login.py",
-      "app/api/routes/users.py"
+      "app/api/routes/users.py",
+      "app/core/security.py"
     ]
   ]
 }
