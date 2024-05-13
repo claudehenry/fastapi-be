@@ -26,7 +26,19 @@ def login_access_token(
     session: SessionDep, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ) -> Token:
     """
-    OAuth2 compatible token login, get an access token for future requests
+    Authenticates a user using their email and password, then generates an access
+    token for future requests with an expiration time based on the application settings.
+
+    Args:
+        session (SessionDep): SessionDep object, which provides access to the
+            user's session data and is used to authenticate the user.
+        form_data (Annotated[OAuth2PasswordRequestForm, Depends()]):
+            OAuth2PasswordRequestForm object containing the username and password
+            of the user to be authenticated.
+
+    Returns:
+        Token: an access token for future requests.
+
     """
     user = crud.authenticate(
         session=session, email=form_data.username, password=form_data.password
@@ -46,7 +58,15 @@ def login_access_token(
 @router.post("/login/test-token", response_model=UserPublic)
 def test_token(current_user: CurrentUser) -> Any:
     """
-    Test access token
+    Generates an access token for a given `CurrentUser`.
+
+    Args:
+        current_user (CurrentUser): current user for whom the access token is being
+            generated.
+
+    Returns:
+        Any: a `CurrentUser` object.
+
     """
     return current_user
 
