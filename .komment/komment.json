@@ -1,13 +1,14 @@
 {
   "meta": {
     "version": "1",
-    "updated_at": "2024-05-01T16:00:12.195Z",
+    "updated_at": "2024-05-13T20:15:15.850Z",
     "created_at": "2024-05-01T16:00:22.577Z",
     "pipelines": []
   },
   "lookup": [
     [
-      "app/tests/crud/test_user.py"
+      "app/tests/crud/test_user.py",
+      "app/api/routes/items.py"
     ]
   ]
 }

@@ -297,5 +297,343 @@
         ]
       }
     }
+  },
+  {
+    "name": "items.py",
+    "path": "app/api/routes/items.py",
+    "content": {
+      "structured": {
+        "description": "",
+        "items": [
+          {
+            "id": "49ebf0a0-07c9-43f8-9199-16bcaa019699",
+            "ancestors": [],
+            "type": "function",
+            "name": "read_items",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 13,
+              "insert": 16
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "current_user",
+                "value": null,
+                "type": "CurrentUser"
+              },
+              {
+                "name": "skip",
+                "value": "int",
+                "type": "0"
+              },
+              {
+                "name": "limit",
+                "value": "int",
+                "type": "100"
+              }
+            ],
+            "returns": "Any",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "if current_user.is_superuser:\n        count_statement = select(func.count()).select_from(Item)\n        count = session.exec(count_statement).one()\n        statement = select(Item).offset(skip).limit(limit)\n        items = session.exec(statement).all()\n    else:\n        count_statement = (\n            select(func.count())\n            .select_from(Item)\n            .where(Item.owner_id == current_user.id)\n        )\n        count = session.exec(count_statement).one()\n        statement = (\n            select(Item)\n            .where(Item.owner_id == current_user.id)\n            .offset(skip)\n            .limit(limit)\n        )\n        items = session.exec(statement).all()\nreturn ItemsPublic(data=items, count=count)",
+            "length": 28,
+            "comment": {
+              "description": "Retrieves items based on user permissions, returning a list of items and their counts.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "3Arcade SessionDependency object, which provides the session for executing the database queries and retrieving the items."
+                },
+                {
+                  "name": "current_user",
+                  "type": "CurrentUser",
+                  "value": null,
+                  "description": "current user who is requesting the items."
+                },
+                {
+                  "name": "skip",
+                  "type": "0",
+                  "value": "int",
+                  "description": "0-based offset from the beginning of the items list that the function should skip when retrieving data."
+                },
+                {
+                  "name": "limit",
+                  "type": "100",
+                  "value": "int",
+                  "description": "maximum number of items to be retrieved from the database for each page of results."
+                }
+              ],
+              "returns": {
+                "type": "Any",
+                "description": "a list of `Item` objects and their count."
+              }
+            }
+          },
+          {
+            "id": "867516d0-46c9-4a81-a2f8-119d8077f237",
+            "ancestors": [],
+            "type": "function",
+            "name": "read_item",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 44,
+              "insert": 45
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "current_user",
+                "value": null,
+                "type": "CurrentUser"
+              },
+              {
+                "name": "id",
+                "value": null,
+                "type": "int"
+              }
+            ],
+            "returns": "Any",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "item = session.get(Item, id)\nif not item:\n        raise HTTPException(status_code=404, detail=\"Item not found\")\nif not current_user.is_superuser and (item.owner_id != current_user.id):\n        raise HTTPException(status_code=400, detail=\"Not enough permissions\")\nreturn item",
+            "length": 10,
+            "comment": {
+              "description": "Retrieves an item by its ID, checks if the user has sufficient permissions to access it, and returns the item if found or raises an exception if not.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "SessionDependency object, which provides access to the session state and allows the function to retrieve items from the session."
+                },
+                {
+                  "name": "current_user",
+                  "type": "CurrentUser",
+                  "value": null,
+                  "description": "current user making the request and is used to check if they have sufficient permissions to access the item being retrieved."
+                },
+                {
+                  "name": "id",
+                  "type": "int",
+                  "value": null,
+                  "description": "ID of the item to be retrieved from the session."
+                }
+              ],
+              "returns": {
+                "type": "Any",
+                "description": "an `Item` object."
+              }
+            }
+          },
+          {
+            "id": "cc8bec8d-de3a-4631-9496-2fedb3f3df2d",
+            "ancestors": [],
+            "type": "function",
+            "name": "create_item",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 57,
+              "insert": 60
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "current_user",
+                "value": null,
+                "type": "CurrentUser"
+              },
+              {
+                "name": "item_in",
+                "value": null,
+                "type": "ItemCreate"
+              }
+            ],
+            "returns": "Any",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "item = Item.model_validate(item_in, update={\"owner_id\": current_user.id})\nsession.add(item)\nsession.commit()\nsession.refresh(item)\nreturn item",
+            "length": 11,
+            "comment": {
+              "description": "Creates a new item by validating its input, adding it to the session, committing the changes, and refreshing the newly created item.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "SessionDep object, which is used to perform database operations such as adding and committing new data to the database."
+                },
+                {
+                  "name": "current_user",
+                  "type": "CurrentUser",
+                  "value": null,
+                  "description": "user who is performing the action of creating a new item, and it is used to set the owner ID of the newly created item to that user's ID."
+                },
+                {
+                  "name": "item_in",
+                  "type": "ItemCreate",
+                  "value": null,
+                  "description": "data to be used to create a new item."
+                }
+              ],
+              "returns": {
+                "type": "Any",
+                "description": "a newly created item object with its attributes validated and updated based on the input parameters."
+              }
+            }
+          },
+          {
+            "id": "0f7089dd-45e3-41b7-bf0b-973381a1904b",
+            "ancestors": [],
+            "type": "function",
+            "name": "update_item",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 71,
+              "insert": 74
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "current_user",
+                "value": null,
+                "type": "CurrentUser"
+              },
+              {
+                "name": "id",
+                "value": null,
+                "type": "int"
+              },
+              {
+                "name": "item_in",
+                "value": null,
+                "type": "ItemUpdate"
+              }
+            ],
+            "returns": "Any",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "item = session.get(Item, id)\nif not item:\n        raise HTTPException(status_code=404, detail=\"Item not found\")\nif not current_user.is_superuser and (item.owner_id != current_user.id):\n        raise HTTPException(status_code=400, detail=\"Not enough permissions\")\nupdate_dict = item_in.model_dump(exclude_unset=True)\nitem.sqlmodel_update(update_dict)\nsession.add(item)\nsession.commit()\nsession.refresh(item)\nreturn item",
+            "length": 17,
+            "comment": {
+              "description": "Updates an existing item in a database by checking its existence, verifying the user's permissions, and applying the specified update using SQLModel.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "SessionDep class instance, which provides the session for accessing and modifying data in the database."
+                },
+                {
+                  "name": "current_user",
+                  "type": "CurrentUser",
+                  "value": null,
+                  "description": "current user making the request and checks if they have sufficient permissions to update the item."
+                },
+                {
+                  "name": "id",
+                  "type": "int",
+                  "value": null,
+                  "description": "ID of the item to be updated."
+                },
+                {
+                  "name": "item_in",
+                  "type": "ItemUpdate",
+                  "value": null,
+                  "description": "update data for the item to be updated, which is used to modify the item's attributes through a `model_dump()` method call before saving it back to the database using the `sqlmodel_update()` method."
+                }
+              ],
+              "returns": {
+                "type": "Any",
+                "description": "an updated item object."
+              }
+            }
+          },
+          {
+            "id": "cff32999-c041-44a8-8bc6-918610c63e12",
+            "ancestors": [],
+            "type": "function",
+            "name": "delete_item",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 91,
+              "insert": 92
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "current_user",
+                "value": null,
+                "type": "CurrentUser"
+              },
+              {
+                "name": "id",
+                "value": null,
+                "type": "int"
+              }
+            ],
+            "returns": "Message",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "item = session.get(Item, id)\nif not item:\n        raise HTTPException(status_code=404, detail=\"Item not found\")\nif not current_user.is_superuser and (item.owner_id != current_user.id):\n        raise HTTPException(status_code=400, detail=\"Not enough permissions\")\nsession.delete(item)\nsession.commit()\nreturn Message(message=\"Item deleted successfully\")",
+            "length": 12,
+            "comment": {
+              "description": "Deletes an item from a database based on its ID, checks if the user has sufficient permissions and raises an exception if not.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "Session object, which provides the functionality for accessing and manipulating data in the database."
+                },
+                {
+                  "name": "current_user",
+                  "type": "CurrentUser",
+                  "value": null,
+                  "description": "current user accessing the function and is used to verify if the user has enough permissions to delete an item."
+                },
+                {
+                  "name": "id",
+                  "type": "int",
+                  "value": null,
+                  "description": "ID of the item to be deleted."
+                }
+              ],
+              "returns": {
+                "type": "Message",
+                "description": "a message indicating that the item has been deleted successfully."
+              }
+            }
+          }
+        ]
+      }
+    }
   }
 ]
