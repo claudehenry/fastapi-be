@@ -389,7 +389,7 @@
         "description": "",
         "items": [
           {
-            "id": "7e78e27a-21c1-4391-804e-c8a4d0c2e5ee",
+            "id": "7e09d33e-a0a8-4107-bfb2-926230021291",
             "ancestors": [],
             "type": "function",
             "name": "login_access_token",
@@ -417,19 +417,19 @@
             "stripped": "user = crud.authenticate(\n        session=session, email=form_data.username, password=form_data.password\n    )\nif not user:\n        raise HTTPException(status_code=400, detail=\"Incorrect email or password\")\n    elif not user.is_active:\n        raise HTTPException(status_code=400, detail=\"Inactive user\")\naccess_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)\nreturn Token(\n        access_token=security.create_access_token(\n            user.id, expires_delta=access_token_expires\n        )\n    )",
             "length": 19,
             "comment": {
-              "description": "Authenticates a user using their email and password, and generates an access token for future requests with an expiration time set by configuration.",
+              "description": "Authenticates a user using their email and password, generates an access token for future requests based on the user's id and expiration time.",
               "params": [
                 {
                   "name": "session",
                   "type": "SessionDep",
                   "value": null,
-                  "description": "SessionDep object containing the session data for the user, which is used to authenticate the user and generate an access token."
+                  "description": "SessionDep object, which contains the session state for the user, and is used to authenticate the user and obtain an access token."
                 },
                 {
                   "name": "form_data",
                   "type": "Annotated[OAuth2PasswordRequestForm, Depends()]",
                   "value": null,
-                  "description": "OAuth2PasswordRequestForm object passed from the client, which contains the username and password provided by the user for login authentication."
+                  "description": "OAuth2PasswordRequestForm object containing the login credentials provided by the user through the login form."
                 }
               ],
               "returns": {
@@ -439,7 +439,7 @@
             }
           },
           {
-            "id": "2f4bdedb-ae59-4162-ab90-a052247018ab",
+            "id": "b9947baa-a9c0-4d92-a540-127509cfb8c6",
             "ancestors": [],
             "type": "function",
             "name": "test_token",
@@ -462,23 +462,23 @@
             "stripped": "return current_user",
             "length": 5,
             "comment": {
-              "description": "Returns the current user's access token.",
+              "description": "Generates an access token based on the current user's details.",
               "params": [
                 {
                   "name": "current_user",
                   "type": "CurrentUser",
                   "value": null,
-                  "description": "current user for whom the access token is being generated."
+                  "description": "current user for which an access token is being tested."
                 }
               ],
               "returns": {
                 "type": "Any",
-                "description": "an `Any` type, indicating that it can take on any value."
+                "description": "a value of type `Any`."
               }
             }
           },
           {
-            "id": "0567b833-4184-451d-b74a-e4d31a501671",
+            "id": "80bbf3ff-7517-4002-8134-2b5cdb39668e",
             "ancestors": [],
             "type": "function",
             "name": "recover_password",
@@ -506,124 +506,24 @@
             "stripped": "user = crud.get_user_by_email(session=session, email=email)\nif not user:\n        raise HTTPException(\n            status_code=404,\n            detail=\"The user with this email does not exist in the system.\",\n        )\npassword_reset_token = generate_password_reset_token(email=email)\nemail_data = generate_reset_password_email(\n        email_to=user.email, email=email, token=password_reset_token\n    )\nsend_email(\n        email_to=user.email,\n        subject=email_data.subject,\n        html_content=email_data.html_content,\n    )\nreturn Message(message=\"Password recovery email sent\")",
             "length": 21,
             "comment": {
-              "description": "Generates a password reset token for an user and sends an email to the user's registered email address with instructions to reset their password.",
+              "description": "Retrieves a user from the database using an provided session object, generates a password reset token, and sends a password recovery email to the user's registered email address with the generated token.",
               "params": [
                 {
                   "name": "email",
                   "type": "str",
                   "value": null,
-                  "description": "email address of the user for whom the password recovery is being performed."
+                  "description": "email address of the user for whom the password recovery process is being initiated."
                 },
                 {
                   "name": "session",
                   "type": "SessionDep",
                   "value": null,
-                  "description": "SessionDep object, which contains the session data and is used to retrieve information from the database for the password recovery process."
+                  "description": "SessionDependency object that provides access to the user's account information and authentication tokens, which is used to retrieve the user's information from the database and generate the password reset email."
                 }
               ],
               "returns": {
                 "type": "Message",
                 "description": "a message indicating that the password recovery email has been sent."
-              }
-            }
-          },
-          {
-            "id": "8b2335d7-d647-47ec-94f9-7e86b3475a23",
-            "ancestors": [],
-            "type": "function",
-            "name": "reset_password",
-            "location": {
-              "offset": " ",
-              "indent": 4,
-              "start": 79,
-              "insert": 80
-            },
-            "params": [
-              {
-                "name": "session",
-                "value": null,
-                "type": "SessionDep"
-              },
-              {
-                "name": "body",
-                "value": null,
-                "type": "NewPassword"
-              }
-            ],
-            "returns": "Message",
-            "skip": false,
-            "docLength": 3,
-            "stripped": "email = verify_password_reset_token(token=body.token)\nif not email:\n        raise HTTPException(status_code=400, detail=\"Invalid token\")\nuser = crud.get_user_by_email(session=session, email=email)\nif not user:\n        raise HTTPException(\n            status_code=404,\n            detail=\"The user with this email does not exist in the system.\",\n        )\n    elif not user.is_active:\n        raise HTTPException(status_code=400, detail=\"Inactive user\")\nhashed_password = get_password_hash(password=body.new_password)\nuser.hashed_password = hashed_password\nsession.add(user)\nsession.commit()\nreturn Message(message=\"Password updated successfully\")",
-            "length": 20,
-            "comment": {
-              "description": "Resets a user's password by verifying the token, retrieving the user from the database, hashing the new password, and updating the user's hashed password in the database.",
-              "params": [
-                {
-                  "name": "session",
-                  "type": "SessionDep",
-                  "value": null,
-                  "description": "SessionDep object, which provides access to the database and other resources necessary for the function to perform its intended actions."
-                },
-                {
-                  "name": "body",
-                  "type": "NewPassword",
-                  "value": null,
-                  "description": "NewPassword object containing the new password to be reset, which is passed into the function for processing."
-                }
-              ],
-              "returns": {
-                "type": "Message",
-                "description": "a message indicating that the password has been updated successfully."
-              }
-            }
-          },
-          {
-            "id": "0f1bd537-3695-4a98-9c30-fc5afff12e0f",
-            "ancestors": [],
-            "type": "function",
-            "name": "recover_password_html_content",
-            "location": {
-              "offset": " ",
-              "indent": 4,
-              "start": 106,
-              "insert": 107
-            },
-            "params": [
-              {
-                "name": "email",
-                "value": null,
-                "type": "str"
-              },
-              {
-                "name": "session",
-                "value": null,
-                "type": "SessionDep"
-              }
-            ],
-            "returns": "Any",
-            "skip": false,
-            "docLength": 3,
-            "stripped": "user = crud.get_user_by_email(session=session, email=email)\nif not user:\n        raise HTTPException(\n            status_code=404,\n            detail=\"The user with this username does not exist in the system.\",\n        )\npassword_reset_token = generate_password_reset_token(email=email)\nemail_data = generate_reset_password_email(\n        email_to=user.email, email=email, token=password_reset_token\n    )\nreturn HTMLResponse(\n        content=email_data.html_content, headers={\"subject:\": email_data.subject}\n    )",
-            "length": 19,
-            "comment": {
-              "description": "Generates an HTML content for password recovery, based on a given email address and user session. It retrieves the user's information from the database, generates a password reset token, and sends an email to the user with instructions to reset their password.",
-              "params": [
-                {
-                  "name": "email",
-                  "type": "str",
-                  "value": null,
-                  "description": "email address of the user for whom the password recovery HTML content is being generated."
-                },
-                {
-                  "name": "session",
-                  "type": "SessionDep",
-                  "value": null,
-                  "description": "SessionDep object which contains the session information for the user whose password is being recovered."
-                }
-              ],
-              "returns": {
-                "type": "Any",
-                "description": "an HTML response with the password reset email content and subject line."
               }
             }
           }

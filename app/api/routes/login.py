@@ -26,16 +26,16 @@ def login_access_token(
     session: SessionDep, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ) -> Token:
     """
-    Authenticates a user using their email and password, and generates an access
-    token for future requests with an expiration time set by configuration.
+    Authenticates a user using their email and password, generates an access token
+    for future requests based on the user's id and expiration time.
 
     Args:
-        session (SessionDep): SessionDep object containing the session data for
-            the user, which is used to authenticate the user and generate an access
+        session (SessionDep): SessionDep object, which contains the session state
+            for the user, and is used to authenticate the user and obtain an access
             token.
         form_data (Annotated[OAuth2PasswordRequestForm, Depends()]):
-            OAuth2PasswordRequestForm object passed from the client, which contains
-            the username and password provided by the user for login authentication.
+            OAuth2PasswordRequestForm object containing the login credentials
+            provided by the user through the login form.
 
     Returns:
         Token: an access token for future requests.
@@ -59,14 +59,14 @@ def login_access_token(
 @router.post("/login/test-token", response_model=UserPublic)
 def test_token(current_user: CurrentUser) -> Any:
     """
-    Returns the current user's access token.
+    Generates an access token based on the current user's details.
 
     Args:
-        current_user (CurrentUser): current user for whom the access token is being
-            generated.
+        current_user (CurrentUser): current user for which an access token is being
+            tested.
 
     Returns:
-        Any: an `Any` type, indicating that it can take on any value.
+        Any: a value of type `Any`.
 
     """
     return current_user
@@ -75,15 +75,17 @@ def test_token(current_user: CurrentUser) -> Any:
 @router.post("/password-recovery/{email}")
 def recover_password(email: str, session: SessionDep) -> Message:
     """
-    Generates a password reset token for an user and sends an email to the user's
-    registered email address with instructions to reset their password.
+    Retrieves a user from the database using an provided session object, generates
+    a password reset token, and sends a password recovery email to the user's
+    registered email address with the generated token.
 
     Args:
-        email (str): email address of the user for whom the password recovery is
-            being performed.
-        session (SessionDep): SessionDep object, which contains the session data
-            and is used to retrieve information from the database for the password
-            recovery process.
+        email (str): email address of the user for whom the password recovery
+            process is being initiated.
+        session (SessionDep): SessionDependency object that provides access to the
+            user's account information and authentication tokens, which is used
+            to retrieve the user's information from the database and generate the
+            password reset email.
 
     Returns:
         Message: a message indicating that the password recovery email has been sent.
@@ -111,20 +113,7 @@ def recover_password(email: str, session: SessionDep) -> Message:
 @router.post("/reset-password/")
 def reset_password(session: SessionDep, body: NewPassword) -> Message:
     """
-    Resets a user's password by verifying the token, retrieving the user from the
-    database, hashing the new password, and updating the user's hashed password
-    in the database.
-
-    Args:
-        session (SessionDep): SessionDep object, which provides access to the
-            database and other resources necessary for the function to perform its
-            intended actions.
-        body (NewPassword): NewPassword object containing the new password to be
-            reset, which is passed into the function for processing.
-
-    Returns:
-        Message: a message indicating that the password has been updated successfully.
-
+    Reset password
     """
     email = verify_password_reset_token(token=body.token)
     if not email:
@@ -151,20 +140,7 @@ def reset_password(session: SessionDep, body: NewPassword) -> Message:
 )
 def recover_password_html_content(email: str, session: SessionDep) -> Any:
     """
-    Generates an HTML content for password recovery, based on a given email address
-    and user session. It retrieves the user's information from the database,
-    generates a password reset token, and sends an email to the user with instructions
-    to reset their password.
-
-    Args:
-        email (str): email address of the user for whom the password recovery HTML
-            content is being generated.
-        session (SessionDep): SessionDep object which contains the session information
-            for the user whose password is being recovered.
-
-    Returns:
-        Any: an HTML response with the password reset email content and subject line.
-
+    HTML Content for Password Recovery
     """
     user = crud.get_user_by_email(session=session, email=email)
 
