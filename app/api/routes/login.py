@@ -26,7 +26,20 @@ def login_access_token(
     session: SessionDep, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ) -> Token:
     """
-    OAuth2 compatible token login, get an access token for future requests
+    Authenticates a user using their email and password, generates an access token
+    for future requests based on the user's id and expiration time.
+
+    Args:
+        session (SessionDep): SessionDep object, which contains the session state
+            for the user, and is used to authenticate the user and obtain an access
+            token.
+        form_data (Annotated[OAuth2PasswordRequestForm, Depends()]):
+            OAuth2PasswordRequestForm object containing the login credentials
+            provided by the user through the login form.
+
+    Returns:
+        Token: an access token for future requests.
+
     """
     user = crud.authenticate(
         session=session, email=form_data.username, password=form_data.password
@@ -46,7 +59,15 @@ def login_access_token(
 @router.post("/login/test-token", response_model=UserPublic)
 def test_token(current_user: CurrentUser) -> Any:
     """
-    Test access token
+    Generates an access token based on the current user's details.
+
+    Args:
+        current_user (CurrentUser): current user for which an access token is being
+            tested.
+
+    Returns:
+        Any: a value of type `Any`.
+
     """
     return current_user
 
@@ -54,7 +75,21 @@ def test_token(current_user: CurrentUser) -> Any:
 @router.post("/password-recovery/{email}")
 def recover_password(email: str, session: SessionDep) -> Message:
     """
-    Password Recovery
+    Retrieves a user from the database using an provided session object, generates
+    a password reset token, and sends a password recovery email to the user's
+    registered email address with the generated token.
+
+    Args:
+        email (str): email address of the user for whom the password recovery
+            process is being initiated.
+        session (SessionDep): SessionDependency object that provides access to the
+            user's account information and authentication tokens, which is used
+            to retrieve the user's information from the database and generate the
+            password reset email.
+
+    Returns:
+        Message: a message indicating that the password recovery email has been sent.
+
     """
     user = crud.get_user_by_email(session=session, email=email)
 

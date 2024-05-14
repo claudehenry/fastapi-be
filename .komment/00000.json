@@ -1,0 +1,973 @@
+[
+  {
+    "name": "test_user.py",
+    "path": "app/tests/crud/test_user.py",
+    "content": {
+      "structured": {
+        "description": "",
+        "items": [
+          {
+            "id": "de5a1fa8-7e0c-4823-a399-eb76cceeb4b5",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_authenticate_user",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 20,
+              "insert": 21
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "email = random_email()\n    password = random_lower_string()\n    user_in = UserCreate(email=email, password=password)\n    user = crud.create_user(session=db, user_create=user_in)\n    authenticated_user = crud.authenticate(\n        session=db, email=email, password=password)\n    assert authenticated_user\n    assert user.email == authenticated_user.email",
+            "length": 9,
+            "comment": {
+              "description": "Authenticates a random user using a generated email and password, creates the user in the database, and asserts that the authenticated user is the same as the created user.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "database session, which is used to perform CRUD (Create, Read, Update, Delete) operations on the user data."
+                }
+              ],
+              "returns": null
+            }
+          },
+          {
+            "id": "e6312ea2-8c96-4774-80f8-fa25e75ecb88",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_not_authenticate_user",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 31,
+              "insert": 32
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "email = random_email()\n    password = random_lower_string()\n    user = crud.authenticate(session=db, email=email, password=password)\n    assert user is None",
+            "length": 5,
+            "comment": {
+              "description": "Attempts to authenticate a random email and password combination but fails due to the user not being authenticated, returning `None`.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "Session object that contains the database connection for the application."
+                }
+              ],
+              "returns": null
+            }
+          },
+          {
+            "id": "d809c689-5d5b-444d-8ca4-96b80e5e2b92",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_check_if_user_is_active",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 38,
+              "insert": 39
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "email = random_email()\n    password = random_lower_string()\n    user_in = UserCreate(email=email, password=password)\n    user = crud.create_user(session=db, user_create=user_in)\n    assert user.is_active is True",
+            "length": 6,
+            "comment": {
+              "description": "Verifies if a newly created user is active by checking their `is_active` attribute.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "session object that provides access to the database for performing CRUD operations, including creating a new user."
+                }
+              ],
+              "returns": null
+            }
+          },
+          {
+            "id": "1341521d-9a0c-4e6a-8534-a77196d68907",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_check_if_user_is_active_inactive",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 46,
+              "insert": 47
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "email = random_email()\n    password = random_lower_string()\n    user_in = UserCreate(email=email, password=password, disabled=True)\n    user = crud.create_user(session=db, user_create=user_in)\n    assert user.is_active",
+            "length": 6,
+            "comment": {
+              "description": "Verifies that a newly created user is marked as active in the database after creation.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "Session object that is used to interact with the database and retrieve data."
+                }
+              ],
+              "returns": null
+            }
+          },
+          {
+            "id": "096f6b3d-490f-470e-93b1-394f4c07fb13",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_check_if_user_is_superuser",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 54,
+              "insert": 55
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "email = random_email()\n    password = random_lower_string()\n    user_in = UserCreate(email=email, password=password, is_superuser=True)\n    user = crud.create_user(session=db, user_create=user_in)\n    assert user.is_superuser is True",
+            "length": 6,
+            "comment": {
+              "description": "Tests whether a newly created user is marked as a superuser by verifying the `is_superuser` attribute of the resulting user object.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "Python `Session` object that provides a connection to the database used for storing and retrieving data."
+                }
+              ],
+              "returns": null
+            }
+          },
+          {
+            "id": "12be5fde-4604-4caf-92bc-9995d597a178",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_check_if_user_is_superuser_normal_user",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 62,
+              "insert": 63
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "username = random_email()\n    password = random_lower_string()\n    user_in = UserCreate(email=username, password=password)\n    user = crud.create_user(session=db, user_create=user_in)\n    assert user.is_superuser is False",
+            "length": 6,
+            "comment": {
+              "description": "Tests whether a newly created user is a superuser or a normal user using the `is_superuser` attribute.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "Python `Session` object that provides a connection to the database, which is used to create and manipulate user objects within the function."
+                }
+              ],
+              "returns": null
+            }
+          },
+          {
+            "id": "2bbbab20-4961-480b-a81e-5237c7607ce6",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_get_user",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 70,
+              "insert": 71
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "password = random_lower_string()\n    username = random_email()\n    user_in = UserCreate(email=username, password=password, is_superuser=True)\n    user = crud.create_user(session=db, user_create=user_in)\n    user_2 = db.get(User, user.id)\n    assert user_2\n    assert user.email == user_2.email\n    assert jsonable_encoder(user) == jsonable_encoder(user_2)",
+            "length": 9,
+            "comment": {
+              "description": "Tests the `get()` method of a Session instance, retrieving a User object and verifying its properties match those of the original User create call.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "Session object, which is used to interact with the database and perform CRUD operations such as creating and retrieving users."
+                }
+              ],
+              "returns": null
+            }
+          },
+          {
+            "id": "67e5b3ef-8166-499c-9a9d-3686bde9d220",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_update_user",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 81,
+              "insert": 82
+            },
+            "params": [
+              {
+                "name": "db",
+                "value": null,
+                "type": "Session"
+              }
+            ],
+            "returns": false,
+            "skip": false,
+            "docLength": null,
+            "stripped": "password = random_lower_string()\n    email = random_email()\n    user_in = UserCreate(email=email, password=password, is_superuser=True)\n    user = crud.create_user(session=db, user_create=user_in)\n    new_password = random_lower_string()\n    user_in_update = UserUpdate(password=new_password, is_superuser=True)\n    if user.id is not None:\n        crud.update_user(session=db, db_user=user, user_in=user_in_update)\n    user_2 = db.get(User, user.id)\n    assert user_2\n    assert user.email == user_2.email\n    assert verify_password(new_password, user_2.hashed_password)",
+            "length": 13,
+            "comment": {
+              "description": "Updates an existing user's password and checks the updated user's email, hashed password, and verifies the new password using `verify_password` function.",
+              "params": [
+                {
+                  "name": "db",
+                  "type": "Session",
+                  "value": null,
+                  "description": "session object of the database system used for creating and updating user objects."
+                }
+              ],
+              "returns": null
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "items.py",
+    "path": "app/api/routes/items.py",
+    "content": {
+      "structured": {
+        "description": "",
+        "image": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"\n \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n<!-- Generated by graphviz version 2.43.0 (0)\n -->\n<!-- Title: app.models.ItemsPublic Pages: 1 -->\n<svg width=\"142pt\" height=\"82pt\"\n viewBox=\"0.00 0.00 142.00 82.00\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n<g id=\"graph0\" class=\"graph\" transform=\"scale(1 1) rotate(0) translate(4 78)\">\n<title>app.models.ItemsPublic</title>\n<!-- Node1 -->\n<g id=\"Node000001\" class=\"node\">\n<title>Node1</title>\n<g id=\"a_Node000001\"><a xlink:title=\" \">\n<polygon fill=\"#999999\" stroke=\"#666666\" points=\"134,-19 0,-19 0,0 134,0 134,-19\"/>\n<text text-anchor=\"middle\" x=\"67\" y=\"-7\" font-family=\"Helvetica,sans-Serif\" font-size=\"10.00\">app.models.ItemsPublic</text>\n</a>\n</g>\n</g>\n<!-- Node2 -->\n<g id=\"Node000002\" class=\"node\">\n<title>Node2</title>\n<g id=\"a_Node000002\"><a xlink:title=\" \">\n<polygon fill=\"white\" stroke=\"#666666\" points=\"99.5,-74 34.5,-74 34.5,-55 99.5,-55 99.5,-74\"/>\n<text text-anchor=\"middle\" x=\"67\" y=\"-62\" font-family=\"Helvetica,sans-Serif\" font-size=\"10.00\">SQLModel</text>\n</a>\n</g>\n</g>\n<!-- Node2&#45;&gt;Node1 -->\n<g id=\"edge1_Node000001_Node000002\" class=\"edge\">\n<title>Node2&#45;&gt;Node1</title>\n<g id=\"a_edge1_Node000001_Node000002\"><a xlink:title=\" \">\n<path fill=\"none\" stroke=\"#63b8ff\" d=\"M67,-44.66C67,-35.93 67,-25.99 67,-19.09\"/>\n<polygon fill=\"#63b8ff\" stroke=\"#63b8ff\" points=\"63.5,-44.75 67,-54.75 70.5,-44.75 63.5,-44.75\"/>\n</a>\n</g>\n</g>\n</g>\n</svg>\n",
+        "items": [
+          {
+            "id": "3e64889d-b174-4abb-8c08-fb78b298feae",
+            "ancestors": [],
+            "type": "function",
+            "name": "read_items",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 13,
+              "insert": 16
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "current_user",
+                "value": null,
+                "type": "CurrentUser"
+              },
+              {
+                "name": "skip",
+                "value": "int",
+                "type": "0"
+              },
+              {
+                "name": "limit",
+                "value": "int",
+                "type": "100"
+              }
+            ],
+            "returns": "Any",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "if current_user.is_superuser:\n        count_statement = select(func.count()).select_from(Item)\n        count = session.exec(count_statement).one()\n        statement = select(Item).offset(skip).limit(limit)\n        items = session.exec(statement).all()\n    else:\n        count_statement = (\n            select(func.count())\n            .select_from(Item)\n            .where(Item.owner_id == current_user.id)\n        )\n        count = session.exec(count_statement).one()\n        statement = (\n            select(Item)\n            .where(Item.owner_id == current_user.id)\n            .offset(skip)\n            .limit(limit)\n        )\n        items = session.exec(statement).all()\nreturn ItemsPublic(data=items, count=count)",
+            "length": 28,
+            "comment": {
+              "description": "Retrieves items from a database based on user permissions. It retrieves the number of items and returns both the items and the total number of items for a given user.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "database session object used for executing SQL queries and retrieving data from the database."
+                },
+                {
+                  "name": "current_user",
+                  "type": "CurrentUser",
+                  "value": null,
+                  "description": "current user accessing the items and is used to filter the items retrieved based on the user's identity."
+                },
+                {
+                  "name": "skip",
+                  "type": "0",
+                  "value": "int",
+                  "description": "0-based offset from the beginning of the result set that the function should start retrieving items from."
+                },
+                {
+                  "name": "limit",
+                  "type": "100",
+                  "value": "int",
+                  "description": "maximum number of items to retrieve from the database for the specified user, and it determines the number of items returned in the response."
+                }
+              ],
+              "returns": {
+                "type": "Any",
+                "description": "a `ItemsPublic` object containing the retrieved item data and its count."
+              }
+            }
+          },
+          {
+            "id": "7a2f90af-7683-4e11-ad7d-c19f3d7da73f",
+            "ancestors": [],
+            "type": "function",
+            "name": "read_item",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 44,
+              "insert": 45
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "current_user",
+                "value": null,
+                "type": "CurrentUser"
+              },
+              {
+                "name": "id",
+                "value": null,
+                "type": "int"
+              }
+            ],
+            "returns": "Any",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "item = session.get(Item, id)\nif not item:\n        raise HTTPException(status_code=404, detail=\"Item not found\")\nif not current_user.is_superuser and (item.owner_id != current_user.id):\n        raise HTTPException(status_code=400, detail=\"Not enough permissions\")\nreturn item",
+            "length": 10,
+            "comment": {
+              "description": "Retrieves an item by its ID from a database session and validates the user's permissions to access it.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "SessionDependency object, which provides access to a session that can be used to retrieve an item by its ID."
+                },
+                {
+                  "name": "current_user",
+                  "type": "CurrentUser",
+                  "value": null,
+                  "description": "current user making the request and is used to check if they have sufficient permissions to access the item being retrieved."
+                },
+                {
+                  "name": "id",
+                  "type": "int",
+                  "value": null,
+                  "description": "ID of the item to be retrieved from the session."
+                }
+              ],
+              "returns": {
+                "type": "Any",
+                "description": "an instance of the `Item` class."
+              }
+            }
+          },
+          {
+            "id": "01d03168-3fa5-4ba8-8560-5cc1fe68805d",
+            "ancestors": [],
+            "type": "function",
+            "name": "create_item",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 57,
+              "insert": 60
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "current_user",
+                "value": null,
+                "type": "CurrentUser"
+              },
+              {
+                "name": "item_in",
+                "value": null,
+                "type": "ItemCreate"
+              }
+            ],
+            "returns": "Any",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "item = Item.model_validate(item_in, update={\"owner_id\": current_user.id})\nsession.add(item)\nsession.commit()\nsession.refresh(item)\nreturn item",
+            "length": 11,
+            "comment": {
+              "description": "Creates a new item by validating its input, updating its owner ID to the current user's ID, adding it to the session, and committing the changes to the database. It then refreshes the newly created item for further processing.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "database session that is used to add, commit, and refresh the newly created item."
+                },
+                {
+                  "name": "current_user",
+                  "type": "CurrentUser",
+                  "value": null,
+                  "description": "owner of the newly created item, and its value is used to update the `owner_id` field of the item being created in the database."
+                },
+                {
+                  "name": "item_in",
+                  "type": "ItemCreate",
+                  "value": null,
+                  "description": "item to be created, which is validated and updated with the current user's id before being added to the session and committed."
+                }
+              ],
+              "returns": {
+                "type": "Any",
+                "description": "an instance of the `Item` model, newly created and added to the session for commitment and refresh."
+              }
+            }
+          },
+          {
+            "id": "501a33f3-4da7-4f36-9372-25ac3270b088",
+            "ancestors": [],
+            "type": "function",
+            "name": "update_item",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 71,
+              "insert": 74
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "current_user",
+                "value": null,
+                "type": "CurrentUser"
+              },
+              {
+                "name": "id",
+                "value": null,
+                "type": "int"
+              },
+              {
+                "name": "item_in",
+                "value": null,
+                "type": "ItemUpdate"
+              }
+            ],
+            "returns": "Any",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "item = session.get(Item, id)\nif not item:\n        raise HTTPException(status_code=404, detail=\"Item not found\")\nif not current_user.is_superuser and (item.owner_id != current_user.id):\n        raise HTTPException(status_code=400, detail=\"Not enough permissions\")\nupdate_dict = item_in.model_dump(exclude_unset=True)\nitem.sqlmodel_update(update_dict)\nsession.add(item)\nsession.commit()\nsession.refresh(item)\nreturn item",
+            "length": 17,
+            "comment": {
+              "description": "Updates an item in a SQL database based on input from the user, ensuring that only authorized users can perform the update and providing a way to refresh the updated item after the update has been committed to the database.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "SessionDep object, which is used to interact with the database and perform operations such as getting and updating items."
+                },
+                {
+                  "name": "current_user",
+                  "type": "CurrentUser",
+                  "value": null,
+                  "description": "current user making the request, and is used to check if the user has sufficient permissions to update the item."
+                },
+                {
+                  "name": "id",
+                  "type": "int",
+                  "value": null,
+                  "description": "ID of the item to be updated."
+                },
+                {
+                  "name": "item_in",
+                  "type": "ItemUpdate",
+                  "value": null,
+                  "description": "`ItemUpdate` instance that contains the updates to be applied to the item."
+                }
+              ],
+              "returns": {
+                "type": "Any",
+                "description": "an updated item object."
+              }
+            }
+          },
+          {
+            "id": "f7f0386c-c9a5-4a41-9cf1-ee0ada2500a9",
+            "ancestors": [],
+            "type": "function",
+            "name": "delete_item",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 91,
+              "insert": 92
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "current_user",
+                "value": null,
+                "type": "CurrentUser"
+              },
+              {
+                "name": "id",
+                "value": null,
+                "type": "int"
+              }
+            ],
+            "returns": "Message",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "item = session.get(Item, id)\nif not item:\n        raise HTTPException(status_code=404, detail=\"Item not found\")\nif not current_user.is_superuser and (item.owner_id != current_user.id):\n        raise HTTPException(status_code=400, detail=\"Not enough permissions\")\nsession.delete(item)\nsession.commit()\nreturn Message(message=\"Item deleted successfully\")",
+            "length": 12,
+            "comment": {
+              "description": "Deletes an item from a session, checking for the item's existence and the user's permissions before deleting it.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "database session to which the item to be deleted belongs."
+                },
+                {
+                  "name": "current_user",
+                  "type": "CurrentUser",
+                  "value": null,
+                  "description": "current user accessing the function and is used to check if they have sufficient permissions to delete an item."
+                },
+                {
+                  "name": "id",
+                  "type": "int",
+                  "value": null,
+                  "description": "ID of the item to be deleted."
+                }
+              ],
+              "returns": {
+                "type": "Message",
+                "description": "a message indicating that the item has been deleted successfully."
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "login.py",
+    "path": "app/api/routes/login.py",
+    "content": {
+      "structured": {
+        "description": "",
+        "items": [
+          {
+            "id": "7e09d33e-a0a8-4107-bfb2-926230021291",
+            "ancestors": [],
+            "type": "function",
+            "name": "login_access_token",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 25,
+              "insert": 28
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "form_data",
+                "value": null,
+                "type": "Annotated[OAuth2PasswordRequestForm, Depends()]"
+              }
+            ],
+            "returns": "Token",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "user = crud.authenticate(\n        session=session, email=form_data.username, password=form_data.password\n    )\nif not user:\n        raise HTTPException(status_code=400, detail=\"Incorrect email or password\")\n    elif not user.is_active:\n        raise HTTPException(status_code=400, detail=\"Inactive user\")\naccess_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)\nreturn Token(\n        access_token=security.create_access_token(\n            user.id, expires_delta=access_token_expires\n        )\n    )",
+            "length": 19,
+            "comment": {
+              "description": "Authenticates a user using their email and password, generates an access token for future requests based on the user's id and expiration time.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "SessionDep object, which contains the session state for the user, and is used to authenticate the user and obtain an access token."
+                },
+                {
+                  "name": "form_data",
+                  "type": "Annotated[OAuth2PasswordRequestForm, Depends()]",
+                  "value": null,
+                  "description": "OAuth2PasswordRequestForm object containing the login credentials provided by the user through the login form."
+                }
+              ],
+              "returns": {
+                "type": "Token",
+                "description": "an access token for future requests."
+              }
+            }
+          },
+          {
+            "id": "b9947baa-a9c0-4d92-a540-127509cfb8c6",
+            "ancestors": [],
+            "type": "function",
+            "name": "test_token",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 47,
+              "insert": 48
+            },
+            "params": [
+              {
+                "name": "current_user",
+                "value": null,
+                "type": "CurrentUser"
+              }
+            ],
+            "returns": "Any",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "return current_user",
+            "length": 5,
+            "comment": {
+              "description": "Generates an access token based on the current user's details.",
+              "params": [
+                {
+                  "name": "current_user",
+                  "type": "CurrentUser",
+                  "value": null,
+                  "description": "current user for which an access token is being tested."
+                }
+              ],
+              "returns": {
+                "type": "Any",
+                "description": "a value of type `Any`."
+              }
+            }
+          },
+          {
+            "id": "80bbf3ff-7517-4002-8134-2b5cdb39668e",
+            "ancestors": [],
+            "type": "function",
+            "name": "recover_password",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 55,
+              "insert": 56
+            },
+            "params": [
+              {
+                "name": "email",
+                "value": null,
+                "type": "str"
+              },
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              }
+            ],
+            "returns": "Message",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "user = crud.get_user_by_email(session=session, email=email)\nif not user:\n        raise HTTPException(\n            status_code=404,\n            detail=\"The user with this email does not exist in the system.\",\n        )\npassword_reset_token = generate_password_reset_token(email=email)\nemail_data = generate_reset_password_email(\n        email_to=user.email, email=email, token=password_reset_token\n    )\nsend_email(\n        email_to=user.email,\n        subject=email_data.subject,\n        html_content=email_data.html_content,\n    )\nreturn Message(message=\"Password recovery email sent\")",
+            "length": 21,
+            "comment": {
+              "description": "Retrieves a user from the database using an provided session object, generates a password reset token, and sends a password recovery email to the user's registered email address with the generated token.",
+              "params": [
+                {
+                  "name": "email",
+                  "type": "str",
+                  "value": null,
+                  "description": "email address of the user for whom the password recovery process is being initiated."
+                },
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "SessionDependency object that provides access to the user's account information and authentication tokens, which is used to retrieve the user's information from the database and generate the password reset email."
+                }
+              ],
+              "returns": {
+                "type": "Message",
+                "description": "a message indicating that the password recovery email has been sent."
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "users.py",
+    "path": "app/api/routes/users.py",
+    "content": {
+      "structured": {
+        "description": "",
+        "items": [
+          {
+            "id": "c804fbb0-0dc5-4cc6-85c2-d03490c637b8",
+            "ancestors": [],
+            "type": "function",
+            "name": "read_users",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 36,
+              "insert": 37
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "skip",
+                "value": "int",
+                "type": "0"
+              },
+              {
+                "name": "limit",
+                "value": "int",
+                "type": "100"
+              }
+            ],
+            "returns": "Any",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "count_statement = select(func.count()).select_from(User)\ncount = session.exec(count_statement).one()\nstatement = select(User).offset(skip).limit(limit)\nusers = session.exec(statement).all()\nreturn UsersPublic(data=users, count=count)",
+            "length": 12,
+            "comment": {
+              "description": "Retrieves a list of users from a database and returns them along with the total number of users in the database.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "Python `Session` object that provides the connection to the database for executing queries."
+                },
+                {
+                  "name": "skip",
+                  "type": "0",
+                  "value": "int",
+                  "description": "0-based offset from the beginning of the result set that the function will skip when retrieving users."
+                },
+                {
+                  "name": "limit",
+                  "type": "100",
+                  "value": "int",
+                  "description": "maximum number of users to be retrieved from the database by the function."
+                }
+              ],
+              "returns": {
+                "type": "Any",
+                "description": "a list of `User` objects and their corresponding count."
+              }
+            }
+          },
+          {
+            "id": "bdd4b6d8-ee51-4ff5-bed1-28371a24f708",
+            "ancestors": [],
+            "type": "function",
+            "name": "create_user",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 53,
+              "insert": 54
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "SessionDep"
+              },
+              {
+                "name": "user_in",
+                "value": null,
+                "type": "UserCreate"
+              }
+            ],
+            "returns": "Any",
+            "skip": false,
+            "docLength": 3,
+            "stripped": "user = crud.get_user_by_email(session=session, email=user_in.email)\nif user:\n        raise HTTPException(\n            status_code=400,\n            detail=\"The user with this email already exists in the system.\",\n        )\nuser = crud.create_user(session=session, user_create=user_in)\nif settings.emails_enabled and user_in.email:\n        email_data = generate_new_account_email(\n            email_to=user_in.email, username=user_in.email, password=user_in.password\n        )\n        send_email(\n            email_to=user_in.email,\n            subject=email_data.subject,\n            html_content=email_data.html_content,\n        )\nreturn user",
+            "length": 22,
+            "comment": {
+              "description": "Creates a new user in the system based on input provided in the `user_in` parameter. If an existing user with the same email exists, a 400 HTTP exception is raised. The function also sends an email to the newly created user's email address if emails are enabled and a password recovery link is included in the input.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "SessionDep",
+                  "value": null,
+                  "description": "SessionDep object, which provides access to session data and methods for managing sessions in the application."
+                },
+                {
+                  "name": "user_in",
+                  "type": "UserCreate",
+                  "value": null,
+                  "description": "user to be created in the system."
+                }
+              ],
+              "returns": {
+                "type": "Any",
+                "description": "a newly created user object."
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "security.py",
+    "path": "app/core/security.py",
+    "content": {
+      "structured": {
+        "description": "",
+        "items": [
+          {
+            "id": "369d124c-0564-43c5-a678-b7e5f0290fdb",
+            "ancestors": [],
+            "type": "function",
+            "name": "create_access_token",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 15,
+              "insert": 16
+            },
+            "params": [
+              {
+                "name": "subject",
+                "value": null,
+                "type": "str | Any"
+              },
+              {
+                "name": "expires_delta",
+                "value": null,
+                "type": "timedelta"
+              }
+            ],
+            "returns": "str",
+            "skip": false,
+            "docLength": null,
+            "stripped": "expire = datetime.utcnow() + expires_delta\n    to_encode = {\"exp\": expire, \"sub\": str(subject)}\n    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)\n    return encoded_jwt",
+            "length": 5,
+            "comment": {
+              "description": "Generates an access token using the given subject and expires delta time. It encodes the token using a secret key and a chosen algorithm, resulting in a secure and unique token.",
+              "params": [
+                {
+                  "name": "subject",
+                  "type": "str | Any",
+                  "value": null,
+                  "description": "identity of the user or application requesting an access token, which is included in the JWT as a claims object."
+                },
+                {
+                  "name": "expires_delta",
+                  "type": "timedelta",
+                  "value": null,
+                  "description": "duration of time that the access token will be valid, and is used to calculate the expiration timestamp for the JWT encoded in the function."
+                }
+              ],
+              "returns": {
+                "type": "str",
+                "description": "a JWT token containing an expiration date and subject ID."
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]
