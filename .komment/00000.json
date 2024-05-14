@@ -969,5 +969,299 @@
         ]
       }
     }
+  },
+  {
+    "name": "crud.py",
+    "path": "app/crud.py",
+    "content": {
+      "structured": {
+        "description": "",
+        "items": [
+          {
+            "id": "191b739f-33fc-4a74-8b13-ab1f98706ca5",
+            "ancestors": [],
+            "type": "function",
+            "name": "create_user",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 9,
+              "insert": 10
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "Session"
+              },
+              {
+                "name": "user_create",
+                "value": null,
+                "type": "UserCreate"
+              }
+            ],
+            "returns": "User",
+            "skip": false,
+            "docLength": null,
+            "stripped": "db_obj = User.model_validate(\n        user_create, update={\n            \"hashed_password\": get_password_hash(user_create.password)}\n    )\n    session.add(db_obj)\n    session.commit()\n    session.refresh(db_obj)\n    return db_obj",
+            "length": 9,
+            "comment": {
+              "description": "Creates a new user instance by validating input data using the `User.model_validate()` method, hashing the password using the `get_password_hash()` method, and adding it to a session for persistence.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "Session",
+                  "value": null,
+                  "description": "Python `Session` object, which is used to interact with the database and persist the newly created user object after it has been validated and hashed password generated."
+                },
+                {
+                  "name": "user_create",
+                  "type": "UserCreate",
+                  "value": null,
+                  "description": "user object to be created, which contains the attributes and values that will be used to create a new user in the database when the function is called."
+                }
+              ],
+              "returns": {
+                "type": "User",
+                "description": "a validated User object."
+              }
+            }
+          },
+          {
+            "id": "9a3ee4d8-3129-436a-8fb1-d1579ca8d5fd",
+            "ancestors": [],
+            "type": "function",
+            "name": "update_user",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 20,
+              "insert": 21
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "Session"
+              },
+              {
+                "name": "db_user",
+                "value": null,
+                "type": "User"
+              },
+              {
+                "name": "user_in",
+                "value": null,
+                "type": "UserUpdate"
+              }
+            ],
+            "returns": "Any",
+            "skip": false,
+            "docLength": null,
+            "stripped": "user_data = user_in.model_dump(exclude_unset=True)\n    extra_data = {}\n    if \"password\" in user_data:\n        password = user_data[\"password\"]\n        hashed_password = get_password_hash(password)\n        extra_data[\"hashed_password\"] = hashed_password\n    db_user.sqlmodel_update(user_data, update=extra_data)\n    session.add(db_user)\n    session.commit()\n    session.refresh(db_user)\n    return db_user",
+            "length": 12,
+            "comment": {
+              "description": "Updates a User object in a database by setting its attributes based on a user update object and storing it in the session.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "Session",
+                  "value": null,
+                  "description": "Session instance that will be used to persist the updated user data to the database after the update operation is completed."
+                },
+                {
+                  "name": "db_user",
+                  "type": "User",
+                  "value": null,
+                  "description": "User instance to be updated, which is passed through to the `sqlmodel_update()` method to update its attributes and then added to the session for persistence."
+                },
+                {
+                  "name": "user_in",
+                  "type": "UserUpdate",
+                  "value": null,
+                  "description": "UserUpdate object containing the data to be updated in the database."
+                }
+              ],
+              "returns": {
+                "type": "Any",
+                "description": "a `User` object that has been updated with the provided data."
+              }
+            }
+          },
+          {
+            "id": "4762231f-df48-4998-9553-d6e50b6225da",
+            "ancestors": [],
+            "type": "function",
+            "name": "get_user_by_email",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 34,
+              "insert": 35
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "Session"
+              },
+              {
+                "name": "email",
+                "value": null,
+                "type": "str"
+              }
+            ],
+            "returns": "User | None",
+            "skip": false,
+            "docLength": null,
+            "stripped": "statement = select(User).where(User.email == email)\n    session_user = session.exec(statement).first()\n    return session_user",
+            "length": 4,
+            "comment": {
+              "description": "Retrieves a user from a database based on their email address using a SQL query selected by the `session` parameter.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "Session",
+                  "value": null,
+                  "description": "database session, which is used to execute the query to retrieve the user from the database."
+                },
+                {
+                  "name": "email",
+                  "type": "str",
+                  "value": null,
+                  "description": "email address of the user to retrieve from the database."
+                }
+              ],
+              "returns": {
+                "type": "User | None",
+                "description": "a User object or None if no user is found with the provided email address."
+              }
+            }
+          },
+          {
+            "id": "02a4aee0-a587-4060-a26e-3a64b7dea6d9",
+            "ancestors": [],
+            "type": "function",
+            "name": "authenticate",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 40,
+              "insert": 41
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "Session"
+              },
+              {
+                "name": "email",
+                "value": null,
+                "type": "str"
+              },
+              {
+                "name": "password",
+                "value": null,
+                "type": "str"
+              }
+            ],
+            "returns": "User | None",
+            "skip": false,
+            "docLength": 1,
+            "stripped": "db_user = get_user_by_email(session=session, email=email)\nif not db_user:\n        return None\nif not verify_password(password, db_user.hashed_password):\n        return None\nreturn db_user",
+            "length": 8,
+            "comment": {
+              "description": "Verifies the authenticity of a user by checking their email address and password against the database. If successful, it returns the User object, otherwise it returns None.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "Session",
+                  "value": null,
+                  "description": "Session instance that is used to authenticate the user."
+                },
+                {
+                  "name": "email",
+                  "type": "str",
+                  "value": null,
+                  "description": "email address of the user to be authenticated."
+                },
+                {
+                  "name": "password",
+                  "type": "str",
+                  "value": null,
+                  "description": "password provided by the user for authentication verification."
+                }
+              ],
+              "returns": {
+                "type": "User | None",
+                "description": "a `User` object if the email and password are valid, otherwise `None`."
+              }
+            }
+          },
+          {
+            "id": "583cd025-d78d-4816-9c42-447dec3c5fd9",
+            "ancestors": [],
+            "type": "function",
+            "name": "create_item",
+            "location": {
+              "offset": " ",
+              "indent": 4,
+              "start": 50,
+              "insert": 51
+            },
+            "params": [
+              {
+                "name": "session",
+                "value": null,
+                "type": "Session"
+              },
+              {
+                "name": "item_in",
+                "value": null,
+                "type": "ItemCreate"
+              },
+              {
+                "name": "owner_id",
+                "value": null,
+                "type": "int"
+              }
+            ],
+            "returns": "Item",
+            "skip": false,
+            "docLength": null,
+            "stripped": "db_item = Item.model_validate(item_in, update={\"owner_id\": owner_id})\n    session.add(db_item)\n    session.commit()\n    session.refresh(db_item)\n    return db_item",
+            "length": 6,
+            "comment": {
+              "description": "Creates a new item object in a database by validating input data, adding it to the session, committing the changes, and retrieving the newly created item.",
+              "params": [
+                {
+                  "name": "session",
+                  "type": "Session",
+                  "value": null,
+                  "description": "database session object, which is used to interact with the database and perform CRUD (Create, Read, Update, Delete) operations on the items."
+                },
+                {
+                  "name": "item_in",
+                  "type": "ItemCreate",
+                  "value": null,
+                  "description": "item to be created or updated in the database, and it is used to validate and modify its properties before adding it to the session."
+                },
+                {
+                  "name": "owner_id",
+                  "type": "int",
+                  "value": null,
+                  "description": "ID of the user who will own the newly created item."
+                }
+              ],
+              "returns": {
+                "type": "Item",
+                "description": "an instance of the `Item` model, which has been created and added to the session."
+              }
+            }
+          }
+        ]
+      }
+    }
   }
 ]
